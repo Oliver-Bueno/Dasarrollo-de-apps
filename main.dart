@@ -1,117 +1,127 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const ModernAppBarDemo());
 
-// Clase principal de la aplicación
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ModernAppBarDemo extends StatelessWidget {
+  const ModernAppBarDemo({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // 👈 Quita el banner DEBUG
-      title: 'Contador Flutter',
+      debugShowCheckedModeBanner: false,
+      title: 'AppBar Personalizada',
       theme: ThemeData(
-        primarySwatch: Colors.green,
-        scaffoldBackgroundColor: const Color.fromARGB(255, 144, 168, 137), // 👈 color de fondo
+        scaffoldBackgroundColor: const Color(0xFFF6F8FA),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF002B5B), // Azul oscuro elegante
+          foregroundColor: Colors.white, // Color del texto e íconos
+          centerTitle: true, // Centra el título
+          elevation: 4,
+          titleTextStyle: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Roboto',
+          ),
+        ),
       ),
-      home: const MyHomePage(),
+      home: const CustomAppBarPage(),
     );
   }
 }
 
-// Clase para la página principal
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  String _mensaje = "";
-
-  void _incrementCounter() {
-    setState(() {
-      if (_counter < 100) {
-        _counter++;
-        _mensaje = "";
-      }
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      if (_counter > 0) {
-        _counter--;
-        _mensaje = "";
-      } else {
-        _mensaje = "⚠️ El contador no puede ser negativo";
-      }
-    });
-  }
-
-  void _resetCounter() {
-    setState(() {
-      _counter = 0;
-      _mensaje = "";
-    });
-  }
+class CustomAppBarPage extends StatelessWidget {
+  const CustomAppBarPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mi Contador Personal'),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.network(
+            'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png',
+            fit: BoxFit.contain,
+          ),
+        ),
+        title: const Text('Mi Aplicación de tareas'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            tooltip: 'Notificaciones',
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text(
+                    '¡Tienes nuevas tareas por completar!',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  backgroundColor: Colors.blueAccent,
+                  duration: const Duration(seconds: 3),
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.navigate_next),
+            tooltip: 'Ir a siguiente página',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const NextPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Valor del contador:',
-              style: TextStyle(fontSize: 20),
-            ),
+          children: [
+            Icon(Icons.auto_awesome, color: Color(0xFF002B5B), size: 50),
+            SizedBox(height: 20),
             Text(
-              '$_counter',
-              style: const TextStyle(
-                fontSize: 50,
+              'Bienvenido a la Aplicación de tareas',
+              style: TextStyle(
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Colors.purple,
+                color: Color(0xFF002B5B),
               ),
             ),
-            const SizedBox(height: 20),
-
-            // Mensaje de advertencia
-            if (_mensaje.isNotEmpty)
-              Text(
-                _mensaje,
-                style: const TextStyle(color: Colors.red, fontSize: 16),
+            SizedBox(height: 8),
+            Text(
+              'Interfaz moderna y profesional',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+                fontStyle: FontStyle.italic,
               ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _decrementCounter,
-                  child: const Text('Disminuir'),
-                ),
-                const SizedBox(width: 30),
-                ElevatedButton(
-                  onPressed: _incrementCounter,
-                  child: const Text('Incrementar'),
-                ),
-                const SizedBox(width: 30),
-                ElevatedButton(
-                  onPressed: _resetCounter,
-                  child: const Text('Reiniciar'),
-                ),
-              ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class NextPage extends StatelessWidget {
+  const NextPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Siguiente Página'),
+      ),
+      body: const Center(
+        child: Text(
+          'Para mas funcionalidades 👨‍💻',
+          style: TextStyle(fontSize: 20),
         ),
       ),
     );
