@@ -1,2 +1,0 @@
-# Dasarrollo-de-apps
-apps
